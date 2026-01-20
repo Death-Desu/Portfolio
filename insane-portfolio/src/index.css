@@ -1,20 +1,13 @@
-import { create } from 'zustand';
+@import "tailwindcss";
 
-type DimensionMode = 'NORMAL' | 'JOJO';
-type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
-
-interface DimensionState {
-  mode: DimensionMode;
-  difficulty: Difficulty;
-  toggleMode: () => void;
-  setDifficulty: (level: Difficulty) => void;
+@layer base {
+  body {
+    @apply bg-[#030303] text-white antialiased overflow-x-hidden cursor-none;
+    /* Electric Blue Glow Path */
+    background-image: radial-gradient(circle at 50% -20%, #0044ff1a, transparent 50%);
+  }
 }
 
-export const useDimensionStore = create<DimensionState>((set) => ({
-  mode: 'NORMAL',
-  difficulty: 'EASY',
-  toggleMode: () => set((state) => ({ 
-    mode: state.mode === 'NORMAL' ? 'JOJO' : 'NORMAL' 
-  })),
-  setDifficulty: (level) => set({ difficulty: level }),
-}));
+.eye-catcher-glow {
+  box-shadow: 0 0 40px -10px rgba(0, 71, 255, 0.3);
+}

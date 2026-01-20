@@ -1,64 +1,127 @@
-import { useDimensionStore } from './store/useDimensionStore';
-import TheTrigger from './components/TheTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDimensionStore } from './store/useDimensionStore';
 
+// Global UI Elements
+import TheTrigger from './Components/TheTrigger';
+import CustomCursor from './Components/common/CustomCursor';
+
+// Normal Mode (Industrial / Premium UX)
+import Hero from './Components/normal/Hero';
+import ProjectGrid from './Components/normal/ProjectGrid';
+import Details from './Components/normal/Details';
+import Games from './Components/normal/Games';
+import Contact from './Components/normal/Contact';
+
+// JoJo Mode (Comic / High UI)
+import Marketplace from './Components/jojo/Marketplace';
+import StandUser from './Components/jojo/StandUser';
+
+/**
+ * ZORD_OS Kernel v2.5
+ * Identity: Krish Patel (Zord)
+ * Specialization: AI Research & Game Architecture
+ */
 function App() {
   const { mode } = useDimensionStore();
 
   return (
-    <div className={`min-h-screen transition-colors duration-700 ease-in-out relative ${
-      mode === 'NORMAL' ? 'bg-human-bg text-human-text' : 'bg-jojo-bg text-white'
+    <div className={`min-h-screen relative overflow-x-hidden selection:bg-white selection:text-black transition-colors duration-700 ${
+      mode === 'NORMAL' ? 'bg-[#050505] text-white' : 'bg-[#facc15] text-black'
     }`}>
       
-      {/* 1. The Content Layer */}
-      <main className="container mx-auto px-4 py-20 relative z-10">
-        <header className="text-center mb-20">
-          <motion.h1 
-            key={mode} // Re-animates when mode changes
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className={`text-6xl font-bold mb-4 ${mode === 'JOJO' ? 'font-serif tracking-widest text-purple-400' : 'tracking-tight'}`}
-          >
-            {mode === 'NORMAL' ? 'Krish "Zord"' : 'STAND MASTER: ZORD'}
-          </motion.h1>
-          <p className="text-xl opacity-75">
-            {mode === 'NORMAL' ? 'AI Researcher & Full Stack Engineer' : 'Power: A | Speed: A | Precision: Infinite'}
-          </p>
-        </header>
+      {/* 1. HIGH-PRECISION INPUT (Custom Cursor) */}
+      <CustomCursor />
 
-        {/* Placeholder for Marketplace/Portfolio */}
-        <div className="h-96 border-2 border-dashed border-gray-500/30 rounded-lg flex items-center justify-center">
-          <p className="text-2xl font-mono">
-            {mode === 'NORMAL' ? '[ Portfolio Content ]' : '[ BOINGO MARKETPLACE LOADING... ]'}
-          </p>
-        </div>
+      {/* 2. THE OS TEXTURE (Scanlines) 
+          Active only in Normal mode for that "Systems Architect" feel
+      */}
+      {mode === 'NORMAL' && <div className="scanline fixed inset-0 pointer-events-none z-[999]" />}
+
+      {/* 3. CORE CONTENT LAYER */}
+      <main className="relative z-10">
+        <AnimatePresence mode="wait">
+          
+          {mode === 'NORMAL' ? (
+            /* [STATE A: INDUSTRIAL ARCHITECT INTERFACE] 
+               Focus: High UX, Smooth Scrolling, Professional Data.
+            */
+            <motion.div 
+              key="normal-mode"
+              initial={{ opacity: 0, filter: 'blur(15px)' }} 
+              animate={{ opacity: 1, filter: 'blur(0px)' }} 
+              exit={{ opacity: 0, scale: 0.95, filter: 'blur(20px)' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {/* Identity & Status */}
+              <Hero />
+              
+              {/* Selected Experience (Projects) */}
+              <ProjectGrid />
+
+              {/* Technical Arsenal & Timeline (Skills/Experience) */}
+              <Details />
+
+              {/* The "Bridge" Section (Games) */}
+              <Games />
+
+              {/* Final Outreach (Contact) */}
+              <Contact />
+            </motion.div>
+          ) : (
+            /* [STATE B: STAND_USER COMIC INTERFACE] 
+               Focus: High UI, Comic Aesthetics, Bold Colors.
+            */
+            <motion.div
+              key="jojo-mode"
+              initial={{ opacity: 0, x: 200, skewX: -10 }}
+              animate={{ opacity: 1, x: 0, skewX: 0 }}
+              exit={{ opacity: 0, x: -200, skewX: 10 }}
+              transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+            >
+              {/* The JoJo Marketplace UI */}
+              <Marketplace />
+              
+              {/* Signature Comic Exit */}
+              <footer className="py-24 bg-black text-white text-center font-black italic tracking-[0.2em] text-4xl uppercase border-t-8 border-white">
+                To Be Continued...
+              </footer>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
-      {/* 2. The Trigger Button */}
+      {/* 4. GLOBAL SYSTEM TRIGGERS & OVERLAYS */}
+      
+      {/* The Dimension Switcher (Stand Arrow) */}
       <TheTrigger />
 
-      {/* 3. The "Time Crucified" Flash Effect Overlay */}
+      {/* Holographic Stand Avatar */}
+      <AnimatePresence>
+        {mode === 'JOJO' && (
+          <motion.div
+            initial={{ opacity: 0, x: 150, y: 50 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: 150 }}
+            className="fixed bottom-0 right-0 z-40 pointer-events-none"
+          >
+            <StandUser />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* "The World" Time-Stop Flash Effect */}
       <AnimatePresence>
         {mode === 'JOJO' && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0] }} // Flash effect
+            animate={{ opacity: [0, 1, 0] }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }} // Fast flash
-            className="fixed inset-0 bg-white z-[999] pointer-events-none mix-blend-difference"
+            transition={{ duration: 0.5, times: [0, 0.1, 1] }}
+            className="fixed inset-0 bg-white z-[10000] pointer-events-none mix-blend-difference"
           />
         )}
       </AnimatePresence>
 
-      {/* 4. The "Menacing" Background Pattern (JoJo Only) */}
-      {mode === 'JOJO' && (
-        <div className="fixed inset-0 pointer-events-none opacity-10 z-0" 
-             style={{ 
-               backgroundImage: 'radial-gradient(circle at 50% 50%, #7e22ce 1px, transparent 1px)', 
-               backgroundSize: '30px 30px' 
-             }} 
-        />
-      )}
     </div>
   );
 }

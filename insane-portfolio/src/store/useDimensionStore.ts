@@ -1,20 +1,15 @@
 import { create } from 'zustand';
 
-type DimensionMode = 'NORMAL' | 'JOJO';
-type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
-
 interface DimensionState {
-  mode: DimensionMode;
-  difficulty: Difficulty;
+  mode: 'NORMAL' | 'JOJO';
+  setMode: (mode: 'NORMAL' | 'JOJO') => void;
   toggleMode: () => void;
-  setDifficulty: (level: Difficulty) => void;
 }
 
 export const useDimensionStore = create<DimensionState>((set) => ({
   mode: 'NORMAL',
-  difficulty: 'EASY',
+  setMode: (newMode) => set({ mode: newMode }),
   toggleMode: () => set((state) => ({ 
     mode: state.mode === 'NORMAL' ? 'JOJO' : 'NORMAL' 
   })),
-  setDifficulty: (level) => set({ difficulty: level }),
 }));
